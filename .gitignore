@@ -1,0 +1,14 @@
+
+\.idea/
+
+\venv/
+
+moja_polityka_siec_pg\.ckpt\.data-00000-of-00001
+
+moja_polityka_siec_pg\.ckpt\.index
+
+moja_polityka_siec_pg\.ckpt\.meta
+
+\.ipynb_checkpoints/
+
+car_racing/__pycache__/
