@@ -9,11 +9,12 @@ from gym.envs.box2d.car_dynamics import Car
 from gym.envs.box2d import car_racing
 
 import cma
+import os
 import multiprocessing as mp
 
 from train_vae import load_vae
 
-_RENDER = True
+_RENDER = False
 _EMBEDDING_SIZE = 32
 _NUM_PREDICTIONS = 2
 _NUM_ACTIONS = 3
@@ -115,7 +116,10 @@ def train():
             generation += 1
             rewards_through_gens.append(rewards)
             np.save('rewards', rewards_through_gens)
-            np.save('best_params', es.best.get()[0])
+            os.remove('best_params.txt')
+            with open('best_params.txt', 'w') as f:
+                for item in es.best.get()[0]:
+                    f.write("%s\n" % item)
     except (KeyboardInterrupt, SystemExit):
         print("Manual Interrupt")
     except Exception as e:
@@ -124,9 +128,15 @@ def train():
 
 
 if __name__ == '__main__':
-    es = train()
-    
+    train()
     input("Press enter to play... ")
+
+    with open("best_params.txt", "r") as f:
+        aaa = [x for x in f.read().split('\n')]
+    
+    best = []
+    for x in aaa:
+        best.append(float(x))
    
-    score = play(es.best.get()[0], verbose=True)
+    score = play(best, verbose=True)
     print("Final Score: {}".format(-score))
